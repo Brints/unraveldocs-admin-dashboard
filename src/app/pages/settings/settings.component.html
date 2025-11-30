@@ -1,0 +1,505 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Page Header -->
+  <div class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <h1 class="text-3xl font-bold text-gray-900">Settings</h1>
+      <p class="text-gray-600 mt-1">Manage your account settings and preferences</p>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex flex-col md:flex-row gap-6">
+      <!-- Sidebar Navigation -->
+      <div class="w-full md:w-64 flex-shrink-0">
+        <nav class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 space-y-1">
+          <button
+            (click)="changeTab('profile')"
+            [class]="activeTab() === 'profile' ?
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg' :
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg'">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            Profile
+          </button>
+
+          <button
+            (click)="changeTab('notifications')"
+            [class]="activeTab() === 'notifications' ?
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg' :
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg'">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+            </svg>
+            Notifications
+          </button>
+
+          <button
+            (click)="changeTab('security')"
+            [class]="activeTab() === 'security' ?
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg' :
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg'">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+            Security
+          </button>
+
+          <button
+            (click)="changeTab('api')"
+            [class]="activeTab() === 'api' ?
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg' :
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg'">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+            API Settings
+          </button>
+
+          <button
+            (click)="changeTab('billing')"
+            [class]="activeTab() === 'billing' ?
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg' :
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg'">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+            </svg>
+            Billing
+          </button>
+
+          <button
+            (click)="changeTab('team')"
+            [class]="activeTab() === 'team' ?
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg' :
+              'w-full flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg'">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            Team
+          </button>
+        </nav>
+      </div>
+
+      <!-- Content Area -->
+      <div class="flex-1">
+        <!-- Profile Tab -->
+        @if (activeTab() === 'profile') {
+          <div class="space-y-6">
+            <!-- Profile Information Card -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-6">Profile Information</h2>
+
+              <!-- Avatar -->
+              <div class="flex items-center space-x-6 mb-6">
+                <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                  {{ userProfile().avatar }}
+                </div>
+                <div>
+                  <button (click)="uploadAvatar()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm">
+                    Change Avatar
+                  </button>
+                  <p class="text-xs text-gray-500 mt-2">JPG, PNG or GIF. Max size 2MB</p>
+                </div>
+              </div>
+
+              <!-- Form -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="userProfile().firstName"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="userProfile().lastName"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <input
+                    type="email"
+                    [(ngModel)]="userProfile().email"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                  <input
+                    type="tel"
+                    [(ngModel)]="userProfile().phone"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="userProfile().company"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="userProfile().role"
+                    disabled
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-6">
+                <button (click)="updateProfile()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg">
+                  Save Changes
+                </button>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+              <div class="space-y-4">
+                @for (activity of recentActivity; track activity.action) {
+                  <div class="flex items-center">
+                    <div class="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
+                    <div class="flex-1">
+                      <p class="text-sm font-medium text-gray-900">{{ activity.action }}</p>
+                      <p class="text-xs text-gray-500">{{ activity.timestamp }}</p>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Notifications Tab -->
+        @if (activeTab() === 'notifications') {
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Notification Preferences</h2>
+
+            <div class="space-y-6">
+              <!-- Email Notifications -->
+              <div>
+                <h3 class="text-sm font-semibold text-gray-900 mb-4">Email Notifications</h3>
+                <div class="space-y-4">
+                  <label class="flex items-center justify-between cursor-pointer">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">Email Notifications</p>
+                      <p class="text-xs text-gray-500">Receive email notifications for important events</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="notificationSettings().emailNotifications"
+                      class="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-blue-600 relative cursor-pointer transition-colors">
+                  </label>
+
+                  <label class="flex items-center justify-between cursor-pointer">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">Document Processed</p>
+                      <p class="text-xs text-gray-500">Get notified when documents finish processing</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="notificationSettings().documentProcessed"
+                      class="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-blue-600 relative cursor-pointer transition-colors">
+                  </label>
+
+                  <label class="flex items-center justify-between cursor-pointer">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">Weekly Report</p>
+                      <p class="text-xs text-gray-500">Receive weekly summary of your activity</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="notificationSettings().weeklyReport"
+                      class="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-blue-600 relative cursor-pointer transition-colors">
+                  </label>
+
+                  <label class="flex items-center justify-between cursor-pointer">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">Security Alerts</p>
+                      <p class="text-xs text-gray-500">Important security notifications</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="notificationSettings().securityAlerts"
+                      class="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-blue-600 relative cursor-pointer transition-colors">
+                  </label>
+
+                  <label class="flex items-center justify-between cursor-pointer">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">Marketing Emails</p>
+                      <p class="text-xs text-gray-500">Product updates and promotional content</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="notificationSettings().marketingEmails"
+                      class="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-blue-600 relative cursor-pointer transition-colors">
+                  </label>
+
+                  <label class="flex items-center justify-between cursor-pointer">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">Push Notifications</p>
+                      <p class="text-xs text-gray-500">Receive push notifications on your devices</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="notificationSettings().pushNotifications"
+                      class="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-blue-600 relative cursor-pointer transition-colors">
+                  </label>
+                </div>
+              </div>
+
+              <div class="flex justify-end">
+                <button (click)="updateNotifications()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg">
+                  Save Preferences
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Security Tab -->
+        @if (activeTab() === 'security') {
+          <div class="space-y-6">
+            <!-- Password -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-4">Password</h2>
+              <p class="text-sm text-gray-600 mb-4">Update your password to keep your account secure</p>
+              <button (click)="changePassword()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                Change Password
+              </button>
+            </div>
+
+            <!-- Two-Factor Authentication -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h2 class="text-xl font-semibold text-gray-900">Two-Factor Authentication</h2>
+                  <p class="text-sm text-gray-600 mt-1">Add an extra layer of security to your account</p>
+                </div>
+                <button
+                  (click)="enable2FA()"
+                  [class]="securitySettings().twoFactorAuth ?
+                    'px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors' :
+                    'px-4 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors'">
+                  {{ securitySettings().twoFactorAuth ? 'Enabled' : 'Disabled' }}
+                </button>
+              </div>
+              @if (securitySettings().twoFactorAuth) {
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <p class="text-sm text-green-800">Two-factor authentication is currently enabled for your account</p>
+                </div>
+              }
+            </div>
+
+            <!-- Session Timeout -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-4">Session Timeout</h2>
+              <p class="text-sm text-gray-600 mb-4">Automatically log out after period of inactivity</p>
+              <select
+                [(ngModel)]="securitySettings().sessionTimeout"
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option [value]="15">15 minutes</option>
+                <option [value]="30">30 minutes</option>
+                <option [value]="60">1 hour</option>
+                <option [value]="120">2 hours</option>
+              </select>
+            </div>
+
+            <!-- Login Notifications -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <label class="flex items-center justify-between cursor-pointer">
+                <div>
+                  <h2 class="text-xl font-semibold text-gray-900">Login Notifications</h2>
+                  <p class="text-sm text-gray-600 mt-1">Get notified when someone logs into your account</p>
+                </div>
+                <input
+                  type="checkbox"
+                  [(ngModel)]="securitySettings().loginNotifications"
+                  class="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-blue-600 relative cursor-pointer transition-colors">
+              </label>
+            </div>
+
+            <div class="flex justify-end">
+              <button (click)="updateSecurity()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg">
+                Save Security Settings
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- API Settings Tab -->
+        @if (activeTab() === 'api') {
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">API Configuration</h2>
+
+            <div class="space-y-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Webhook URL</label>
+                <input
+                  type="url"
+                  [(ngModel)]="apiSettings().webhookUrl"
+                  placeholder="https://api.example.com/webhook"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p class="text-xs text-gray-500 mt-1">Receive real-time updates via webhooks</p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Retry Attempts</label>
+                <select
+                  [(ngModel)]="apiSettings().retryAttempts"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option [value]="1">1 attempt</option>
+                  <option [value]="3">3 attempts</option>
+                  <option [value]="5">5 attempts</option>
+                  <option [value]="10">10 attempts</option>
+                </select>
+                <p class="text-xs text-gray-500 mt-1">Number of retry attempts for failed requests</p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Request Timeout (seconds)</label>
+                <input
+                  type="number"
+                  [(ngModel)]="apiSettings().timeout"
+                  min="10"
+                  max="120"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p class="text-xs text-gray-500 mt-1">Maximum time to wait for API response</p>
+              </div>
+
+              <div class="flex justify-end">
+                <button (click)="updateApiSettings()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg">
+                  Save API Settings
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Billing Tab -->
+        @if (activeTab() === 'billing') {
+          <div class="space-y-6">
+            <!-- Current Plan -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-6">Current Plan</h2>
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <p class="text-2xl font-bold text-gray-900">{{ billingInfo.plan }}</p>
+                  <p class="text-gray-600">{{ billingInfo.price }}</p>
+                </div>
+                <button (click)="upgradeSubscription()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                  Upgrade Plan
+                </button>
+              </div>
+
+              <!-- Usage -->
+              <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-sm font-medium text-gray-700">Document Usage</span>
+                  <span class="text-sm font-bold text-gray-900">{{ billingInfo.usage.documents | number }} / {{ billingInfo.usage.limit | number }}</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full" [style.width.%]="billingInfo.usage.percentage"></div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p class="text-gray-600">Next Billing Date</p>
+                  <p class="font-medium text-gray-900">{{ billingInfo.nextBilling }}</p>
+                </div>
+                <div>
+                  <p class="text-gray-600">Payment Method</p>
+                  <p class="font-medium text-gray-900">{{ billingInfo.paymentMethod }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cancel Subscription -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-2">Cancel Subscription</h2>
+              <p class="text-sm text-gray-600 mb-4">Cancel your subscription at any time. Your access will continue until the end of the billing period.</p>
+              <button (click)="cancelSubscription()" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
+                Cancel Subscription
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- Team Tab -->
+        @if (activeTab() === 'team') {
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">Team Members</h2>
+              <button (click)="inviteTeamMember()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Invite Member
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              @for (member of teamMembers; track member.email) {
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
+                  <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                      {{ member.avatar }}
+                    </div>
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">{{ member.name }}</p>
+                      <p class="text-xs text-gray-500">{{ member.email }}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center space-x-3">
+                    <span [class]="member.status === 'active' ?
+                      'px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700' :
+                      'px-2.5 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700'">
+                      {{ member.status }}
+                    </span>
+                    <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
+                      {{ member.role }}
+                    </span>
+                    <button (click)="removeTeamMember(member)" class="text-red-600 hover:text-red-700 text-sm font-medium">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Danger Zone -->
+        <div class="bg-red-50 border border-red-200 rounded-xl p-6 mt-6">
+          <h2 class="text-xl font-semibold text-red-900 mb-4">Danger Zone</h2>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-red-900">Export Your Data</p>
+                <p class="text-xs text-red-700">Download a copy of all your data</p>
+              </div>
+              <button (click)="exportData()" class="px-4 py-2 border-2 border-red-600 text-red-600 rounded-lg font-medium hover:bg-red-600 hover:text-white transition-colors">
+                Export Data
+              </button>
+            </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-red-900">Delete Account</p>
+                <p class="text-xs text-red-700">Permanently delete your account and all data</p>
+              </div>
+              <button (click)="deleteAccount()" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
