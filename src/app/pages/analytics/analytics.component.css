@@ -1,0 +1,113 @@
+/* Analytics Component Styles */
+
+/* Smooth transitions */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Card hover effects */
+.hover\:shadow-md {
+  transition: box-shadow 0.2s ease;
+}
+
+/* Chart animations */
+@keyframes barGrow {
+  from {
+    height: 0;
+  }
+}
+
+.bar-animate {
+  animation: barGrow 0.5s ease-out;
+}
+
+/* Donut chart animations */
+@keyframes drawCircle {
+  from {
+    stroke-dashoffset: 502.65;
+  }
+}
+
+circle {
+  animation: drawCircle 1s ease-out;
+}
+
+/* Progress bar animation */
+@keyframes fillProgress {
+  from {
+    width: 0;
+  }
+}
+
+.progress-fill {
+  animation: fillProgress 1s ease-out;
+}
+
+/* Tooltip hover */
+.group:hover .group-hover\:block {
+  display: block;
+}
+
+/* Table row hover */
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+/* Period button active state */
+button {
+  transition: all 0.2s ease;
+}
+
+/* Focus states for accessibility */
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Number animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count {
+  animation: countUp 0.5s ease-out;
+}
+
+/* Responsive table */
+@media (max-width: 640px) {
+  table {
+    font-size: 0.875rem;
+  }
+
+  th, td {
+    padding: 0.5rem;
+  }
+}
+

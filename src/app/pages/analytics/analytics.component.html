@@ -1,0 +1,366 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Page Header -->
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
+      <p class="text-gray-600 mt-1">Track performance, usage, and insights</p>
+    </div>
+    <div class="flex items-center space-x-3">
+      <!-- Period Selector -->
+      <div class="flex bg-white rounded-lg shadow-sm border border-gray-200 p-1">
+        <button
+          (click)="changePeriod('7d')"
+          [class]="selectedPeriod() === '7d' ?
+            'px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md' :
+            'px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md'">
+          7 Days
+        </button>
+        <button
+          (click)="changePeriod('30d')"
+          [class]="selectedPeriod() === '30d' ?
+            'px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md' :
+            'px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md'">
+          30 Days
+        </button>
+        <button
+          (click)="changePeriod('90d')"
+          [class]="selectedPeriod() === '90d' ?
+            'px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md' :
+            'px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md'">
+          90 Days
+        </button>
+        <button
+          (click)="changePeriod('1y')"
+          [class]="selectedPeriod() === '1y' ?
+            'px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md' :
+            'px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md'">
+          1 Year
+        </button>
+      </div>
+
+      <!-- Export Button -->
+      <button (click)="exportReport()" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg text-sm flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        Export Report
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    @for (kpi of kpis; track kpi.title) {
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+          <div [class]="'w-12 h-12 rounded-lg flex items-center justify-center bg-' + kpi.color + '-100'">
+            @switch (kpi.icon) {
+              @case ('document') {
+                <svg [class]="'w-6 h-6 text-' + kpi.color + '-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              }
+              @case ('chart') {
+                <svg [class]="'w-6 h-6 text-' + kpi.color + '-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+              }
+              @case ('clock') {
+                <svg [class]="'w-6 h-6 text-' + kpi.color + '-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              }
+              @case ('check') {
+                <svg [class]="'w-6 h-6 text-' + kpi.color + '-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              }
+            }
+          </div>
+          <span [class]="'text-sm font-semibold ' + (kpi.trend === 'up' ? 'text-green-600' : 'text-red-600')">
+            {{ kpi.change }}
+          </span>
+        </div>
+        <h3 class="text-gray-600 text-sm font-medium mb-1">{{ kpi.title }}</h3>
+        <p class="text-3xl font-bold text-gray-900">{{ kpi.value }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- Charts Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <!-- Processing Trend Chart -->
+    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900">Processing Trend</h2>
+          <p class="text-sm text-gray-600">Documents processed over time</p>
+        </div>
+      </div>
+
+      <!-- Bar Chart -->
+      <div class="h-64">
+        <div class="flex items-end justify-between h-full space-x-2">
+          @for (data of processingTrend; track data.date) {
+            <div class="flex-1 flex flex-col items-center">
+              <div class="w-full bg-gray-200 rounded-t-lg relative flex items-end" style="height: 100%;">
+                <div
+                  class="w-full bg-gradient-to-t from-blue-600 to-blue-400 rounded-t-lg transition-all hover:from-blue-700 hover:to-blue-500 cursor-pointer relative group"
+                  [style.height.%]="getBarHeight(data.documents, getProcessingTrendMaxValue())">
+                  <!-- Tooltip -->
+                  <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block">
+                    <div class="bg-gray-900 text-white text-xs rounded-lg py-2 px-3 whitespace-nowrap">
+                      <div class="font-semibold">{{ data.documents }} docs</div>
+                      <div class="text-gray-300">{{ data.accuracy }}% accuracy</div>
+                      <div class="text-red-300">{{ data.errors }} errors</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="text-xs text-gray-600 mt-2">{{ data.date }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Document Types Distribution -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">Document Types</h2>
+      <div class="space-y-4">
+        @for (type of documentTypes; track type.label) {
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700">{{ type.label }}</span>
+              <span class="text-sm font-bold text-gray-900">{{ type.value }}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div
+                class="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all"
+                [style.width.%]="type.value">
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Status & Storage Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Status Distribution -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">Processing Status</h2>
+      <div class="flex items-center justify-center mb-6">
+        <!-- Donut Chart Placeholder -->
+        <div class="relative w-48 h-48">
+          <svg class="w-full h-full transform -rotate-90">
+            @for (status of statusDistribution; track status.label; let i = $index) {
+              <circle
+                cx="96"
+                cy="96"
+                r="80"
+                fill="none"
+                [attr.stroke]="i === 0 ? '#10b981' : i === 1 ? '#3b82f6' : i === 2 ? '#ef4444' : '#f59e0b'"
+                stroke-width="20"
+                [attr.stroke-dasharray]="(status.value / 100) * 502.65 + ' 502.65'"
+                [attr.stroke-dashoffset]="getStatusOffset(i)"
+                class="transition-all">
+              </circle>
+            }
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-gray-900">99%</div>
+              <div class="text-sm text-gray-600">Success</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        @for (status of statusDistribution; track status.label; let i = $index) {
+          <div class="flex items-center">
+            <div
+              class="w-3 h-3 rounded-full mr-2"
+              [class]="i === 0 ? 'bg-green-500' : i === 1 ? 'bg-blue-500' : i === 2 ? 'bg-red-500' : 'bg-yellow-500'">
+            </div>
+            <div>
+              <div class="text-sm font-medium text-gray-900">{{ status.value }}%</div>
+              <div class="text-xs text-gray-600">{{ status.label }}</div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Storage Statistics -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">Storage Usage</h2>
+
+      <!-- Progress Bar -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-700">Total Storage</span>
+          <span class="text-sm font-bold text-gray-900">{{ storageStats.totalUsed }} GB / {{ storageStats.totalLimit }} GB</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-3">
+          <div
+            class="bg-gradient-to-r from-blue-600 to-indigo-600 h-3 rounded-full transition-all"
+            [style.width.%]="(storageStats.totalUsed / storageStats.totalLimit) * 100">
+          </div>
+        </div>
+        <p class="text-xs text-gray-600 mt-2">{{ storageStats.documentsCount | number }} documents • Avg {{ storageStats.avgDocumentSize }} MB per doc</p>
+      </div>
+
+      <!-- Storage Breakdown -->
+      <div class="space-y-3">
+        @for (item of storageStats.breakdown; track item.type) {
+          <div class="flex items-center justify-between">
+            <div class="flex items-center flex-1">
+              <div class="w-2 h-2 rounded-full bg-blue-600 mr-3"></div>
+              <span class="text-sm text-gray-700">{{ item.type }}</span>
+            </div>
+            <div class="flex items-center">
+              <span class="text-sm font-medium text-gray-900 mr-3">{{ item.size }} GB</span>
+              <span class="text-xs text-gray-600 w-12 text-right">{{ item.percentage }}%</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Tables Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Top Documents -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">Top Documents</h2>
+        <p class="text-sm text-gray-600">Most frequently processed</p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Document</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Count</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Accuracy</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            @for (doc of topDocuments; track doc.name) {
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <div class="text-sm font-medium text-gray-900 truncate max-w-xs">{{ doc.name }}</div>
+                  <div class="text-xs text-gray-500">{{ doc.totalPages | number }} pages</div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ doc.processedCount | number }}</td>
+                <td class="px-6 py-4">
+                  <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                    {{ doc.avgAccuracy }}%
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- User Activity -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">User Activity</h2>
+        <p class="text-sm text-gray-600">Most active users</p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Uploads</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">API Calls</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            @for (user of userActivity; track user.user) {
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-semibold text-xs mr-3">
+                      {{ getUserInitials(user.user) }}
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">{{ user.user }}</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.uploads }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.apiCalls | number }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Analysis & API Stats -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Error Analysis -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">Error Analysis</h2>
+      <div class="space-y-4">
+        @for (error of errorTypes; track error.type) {
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700">{{ error.type }}</span>
+              <div class="flex items-center">
+                <span class="text-sm font-bold text-gray-900 mr-2">{{ error.count }}</span>
+                <span class="text-xs text-gray-600">({{ error.percentage }}%)</span>
+              </div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div
+                class="bg-gradient-to-r from-red-600 to-red-400 h-2 rounded-full transition-all"
+                [style.width.%]="error.percentage">
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- API Statistics -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">API Performance</h2>
+
+      <!-- API Overview -->
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="text-center p-3 bg-blue-50 rounded-lg">
+          <div class="text-2xl font-bold text-blue-600">{{ apiStats.totalCalls | number }}</div>
+          <div class="text-xs text-gray-600">Total Calls</div>
+        </div>
+        <div class="text-center p-3 bg-green-50 rounded-lg">
+          <div class="text-2xl font-bold text-green-600">{{ apiStats.successRate }}%</div>
+          <div class="text-xs text-gray-600">Success Rate</div>
+        </div>
+        <div class="text-center p-3 bg-purple-50 rounded-lg">
+          <div class="text-2xl font-bold text-purple-600">{{ apiStats.avgResponseTime }}ms</div>
+          <div class="text-xs text-gray-600">Avg Response</div>
+        </div>
+      </div>
+
+      <!-- Top Endpoints -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-semibold text-gray-700">Top Endpoints</h3>
+        @for (endpoint of apiStats.topEndpoints; track endpoint.endpoint) {
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <div class="text-sm font-medium text-gray-900 font-mono">{{ endpoint.endpoint }}</div>
+              <div class="text-xs text-gray-500">{{ endpoint.calls | number }} calls • {{ endpoint.avgTime }}ms avg</div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
