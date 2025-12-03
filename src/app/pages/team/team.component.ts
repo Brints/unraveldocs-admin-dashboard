@@ -364,12 +364,7 @@ export class TeamComponent {
   deleteSelectedMembers(): void {
     if (confirm(`Are you sure you want to remove ${this.selectedCount} member(s)?`)) {
       const selectedIds = this.selectedMembers();
-      selectedIds.forEach(id => {
-        const index = this.teamMembers.findIndex(m => m.id === id);
-        if (index > -1) {
-          this.teamMembers.splice(index, 1);
-        }
-      });
+      this.teamMembers = this.teamMembers.filter(m => !selectedIds.includes(m.id));
       this.deselectAllMembers();
     }
   }

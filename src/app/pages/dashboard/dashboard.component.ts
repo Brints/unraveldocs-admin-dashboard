@@ -501,9 +501,11 @@ export class DashboardComponent {
         case 'size':
           return b.sizeBytes - a.sizeBytes;
         case 'accuracy':
+        {
           const accA = a.accuracy || 0;
           const accB = b.accuracy || 0;
           return accB - accA;
+        }
         default:
           return 0;
       }
