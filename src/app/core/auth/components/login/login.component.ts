@@ -44,7 +44,18 @@ export class LoginComponent {
     const loginData: LoginRequest = this.loginForm.value;
 
     this.authService.login(loginData).subscribe({
-      next: () => {
+      next: (response) => {
+        const userRole = response.data.role;
+
+        // Check if user has admin privileges
+        if (!this.authService.isAdminRole(userRole)) {
+          this.isSubmitting.set(false);
+          this.errorMessage.set('Access denied. Only administrators can access this system.');
+          // Clear any stored auth data
+          this.authService.logout();
+          return;
+        }
+
         this.isSubmitting.set(false);
         // AuthService handles navigation
       },

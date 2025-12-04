@@ -13,9 +13,23 @@ export interface LoginRequest {
 }
 
 export interface AuthResponse {
-  token: string;
-  refreshToken?: string;
-  user: User;
+  statusCode: number;
+  status: string;
+  message: string;
+  data: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+    lastLogin?: string;
+    isActive: boolean;
+    isVerified: boolean;
+    accessToken: string;
+    refreshToken: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
 }
 
 export interface User {
@@ -23,7 +37,12 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  role?: string;
+  role: string;
+  lastLogin?: string;
+  isActive?: boolean;
+  isVerified?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AuthState {

@@ -103,6 +103,20 @@
           }
         </button>
 
+        <!-- OTP Generation -->
+        <button
+          (click)="navigateTo('otp')"
+          [class]="activePage() === 'otp' ?
+            'w-full flex items-center px-3 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg' :
+            'w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors'">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+          @if (sidebarOpen()) {
+            <span class="ml-3">OTP Generation</span>
+          }
+        </button>
+
         <!-- Team -->
         <button
           (click)="navigateTo('team')"
@@ -158,7 +172,14 @@
           </div>
           @if (sidebarOpen()) {
             <div class="ml-3 flex-1">
-              <p class="text-sm font-medium text-gray-900">{{ user()?.firstName }} {{ user()?.lastName }}</p>
+              <div class="flex items-center gap-2">
+                <p class="text-sm font-medium text-gray-900">{{ user()?.firstName }} {{ user()?.lastName }}</p>
+                @if (user()?.role === 'super_admin') {
+                  <span class="px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-semibold rounded">SUPER</span>
+                } @else if (user()?.role === 'admin') {
+                  <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-semibold rounded">ADMIN</span>
+                }
+              </div>
               <p class="text-xs text-gray-500 truncate">{{ user()?.email }}</p>
             </div>
           }
@@ -225,7 +246,15 @@
           <!-- Page Title -->
           <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
-            <p class="text-gray-600">Welcome back, {{ user()?.firstName }}! Here's what's happening today.</p>
+            <div class="flex items-center gap-2">
+              <p class="text-gray-600">Welcome back, {{ user()?.firstName }}!</p>
+              @if (user()?.role === 'super_admin') {
+                <span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded">Super Admin</span>
+              } @else if (user()?.role === 'admin') {
+                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">Admin</span>
+              }
+            </div>
+            <p class="text-gray-500 text-sm mt-1">Here's what's happening today.</p>
           </div>
 
           <!-- ...existing code... -->
@@ -526,6 +555,16 @@
       <!-- API Keys Page -->
       @if (activePage() === 'api-keys') {
         <app-api-keys></app-api-keys>
+      }
+
+      <!-- OTP Generation Page -->
+      @if (activePage() === 'otp') {
+        <app-otp></app-otp>
+      }
+
+      <!-- Team Page -->
+      @if (activePage() === 'team') {
+        <app-team></app-team>
       }
 
       <!-- Settings Page -->

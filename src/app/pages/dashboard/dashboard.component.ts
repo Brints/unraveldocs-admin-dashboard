@@ -6,11 +6,12 @@ import { AnalyticsComponent } from '../analytics/analytics.component';
 import { ApiKeysComponent } from '../api-keys/api-keys.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { TeamComponent } from '../team/team.component';
+import { OtpComponent } from '../otp/otp.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, AnalyticsComponent, ApiKeysComponent, SettingsComponent, TeamComponent],
+  imports: [CommonModule, FormsModule, AnalyticsComponent, ApiKeysComponent, SettingsComponent, TeamComponent, OtpComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -23,7 +24,7 @@ export class DashboardComponent {
   sidebarOpen = signal(true);
 
   // Active page state
-  activePage = signal<'dashboard' | 'documents' | 'upload' | 'queue' | 'analytics' | 'api-keys' | 'team' | 'settings' | 'help'>('dashboard');
+  activePage = signal<'dashboard' | 'documents' | 'upload' | 'queue' | 'analytics' | 'api-keys' | 'otp' | 'team' | 'settings' | 'help'>('dashboard');
 
   // Documents page state
   documentSearchQuery = signal('');
@@ -418,7 +419,7 @@ export class DashboardComponent {
     this.sidebarOpen.update(v => !v);
   }
 
-  navigateTo(page: 'dashboard' | 'documents' | 'upload' | 'queue' | 'analytics' | 'api-keys' | 'team' | 'settings' | 'help'): void {
+  navigateTo(page: 'dashboard' | 'documents' | 'upload' | 'queue' | 'analytics' | 'api-keys' | 'otp' | 'team' | 'settings' | 'help'): void {
     this.activePage.set(page);
   }
 

@@ -13,7 +13,19 @@ export const authGuard: CanActivateFn = (
   const router = inject(Router);
 
   if (authService.isAuthenticated()) {
-    return true;
+    const user = authService.user();
+
+    // Check if user has admin role
+    if (user && user.role && authService.isAdminRole(user.role)) {
+      return true;
+    }
+
+    // User is authenticated but not an admin
+    authService.logout();
+    router.navigate(['/auth/login'], {
+      queryParams: { error: 'unauthorized' }
+    });
+    return false;
   }
 
   // Store the attempted URL for redirecting after login
