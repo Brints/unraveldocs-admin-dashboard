@@ -20,7 +20,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
 
-  private readonly API_URL = `${environment.apiUrl}/auth`;
+  private readonly API_URL = `${environment.apiUrl}`;
 
   // State management using signals
   private readonly authState = signal<AuthState>({
@@ -49,7 +49,7 @@ export class AuthService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    return this.http.post<AuthResponse>(`${this.API_URL}/signup`, request).pipe(
+    return this.http.post<AuthResponse>(`${this.API_URL}/admin/signup`, request).pipe(
       tap(response => {
         this.handleAuthSuccess(response);
       }),
@@ -68,9 +68,9 @@ export class AuthService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    return this.http.post<AuthResponse>(`${this.API_URL}/login`, request).pipe(
-      tap(response => {
-        this.handleAuthSuccess(response);
+    return this.http.post<AuthResponse>(`${this.API_URL}/auth/login`, request).pipe(
+      tap(async response => {
+        await this.handleAuthSuccess(response);
       }),
       catchError(error => {
         this.handleAuthError(error);
@@ -83,20 +83,32 @@ export class AuthService {
   /**
    * Log out the current user
    */
-  logout(): void {
+  async logout(): Promise<void> {
+    const token = localStorage.getItem('token');
+
+    // Call logout endpoint to blacklist the token
+    if (token) {
+      try {
+        await this.http.post(`${this.API_URL}/auth/logout`, {}).toPromise();
+      } catch (error) {
+        // Even if the API call fails, we still clear local state
+        console.error('Logout API call failed:', error);
+      }
+    }
+
     this.clearAuthState();
-    this.router.navigate(['/auth/login']);
+    await this.router.navigate(['/auth/login']);
   }
 
   /**
    * Refresh the authentication token
    */
   refreshToken(): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/refresh`, {
+    return this.http.post<AuthResponse>(`${this.API_URL}/auth/refresh-token`, {
       refreshToken: localStorage.getItem('refreshToken')
     }).pipe(
-      tap(response => {
-        this.handleAuthSuccess(response);
+      tap(async response => {
+        await this.handleAuthSuccess(response);
       }),
       catchError(error => {
         this.logout();
@@ -124,24 +136,50 @@ export class AuthService {
   }
 
   /**
+   * Check if the role is an admin role (super_admin or admin)
+   */
+  isAdminRole(role: string): boolean {
+    const normalizedRole = role.toLowerCase();
+    return normalizedRole === 'super_admin' || normalizedRole === 'admin';
+  }
+
+  /**
    * Handle successful authentication
    */
-  private handleAuthSuccess(response: AuthResponse): void {
+  private async handleAuthSuccess(response: AuthResponse): Promise<void> {
+    const { data } = response;
+
     // Store tokens
-    localStorage.setItem('token', response.token);
-    if (response.refreshToken) {
-      localStorage.setItem('refreshToken', response.refreshToken);
+    localStorage.setItem('token', data.accessToken);
+    if (data.refreshToken) {
+      localStorage.setItem('refreshToken', data.refreshToken);
     }
+
+    // Store user data
+    const user: User = {
+      id: data.id,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      role: data.role,
+      lastLogin: data.lastLogin,
+      isActive: data.isActive,
+      isVerified: data.isVerified,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt
+    };
+
+    localStorage.setItem('user', JSON.stringify(user));
 
     // Update auth state
     this.authState.set({
-      user: response.user,
-      token: response.token,
+      user,
+      token: data.accessToken,
       isAuthenticated: true
     });
 
     // Navigate to dashboard
-    this.router.navigate(['/dashboard']);
+    await this.router.navigate(['/dashboard']);
   }
 
   /**
@@ -173,11 +211,18 @@ export class AuthService {
     if (token && userJson) {
       try {
         const user = JSON.parse(userJson) as User;
-        this.authState.set({
-          user,
-          token,
-          isAuthenticated: true
-        });
+
+        // Check if user has admin role
+        if (user.role && this.isAdminRole(user.role)) {
+          this.authState.set({
+            user,
+            token,
+            isAuthenticated: true
+          });
+        } else {
+          // User is not an admin, clear auth state
+          this.clearAuthState();
+        }
       } catch (e) {
         this.clearAuthState();
       }
